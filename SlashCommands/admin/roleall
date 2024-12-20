@@ -1,0 +1,27 @@
+const { MessageEmbed } = require('discord.js');
+let ms = require('ms')
+module.exports = {
+  name:"role",
+  description:"to give someone a role",
+  options: [{
+    name : "role",
+    description: "role to give all",
+    type: 8,
+    required: true
+  }],
+
+  run: async(client, interaction, args) => {
+    try {
+      let role = interaction.options.getRole("role")
+      
+      if (!interaction.member.permissions.has('MANAGE_CHANNELS')) return interaction.reply(`** 😕 You don't have permissions **`);
+      await interaction.guild.members.fetch();
+               await interaction.guild.members.cache.forEach(async (member) => {
+  await member.roles.add(role)
+})
+      interaction.reply({  content : `> ** Done Gived All , Role ${role} **`});
+} catch (err) {
+      console.log(err)
+  }
+ }
+}
